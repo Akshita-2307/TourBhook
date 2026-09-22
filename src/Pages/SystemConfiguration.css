@@ -4,17 +4,17 @@
   --configuration-border: #dbe5f1;
   max-width: 1390px;
   margin: 0 auto;
-  padding: 24px 28px 36px;
+  padding: 22px 23px 36px;
   color: var(--configuration-navy);
 }
 
 .system-configuration-header {
-  margin-bottom: 15px;
+  margin-bottom: 18px;
 }
 
 .system-configuration-header h1 {
   margin: 0;
-  font-size: clamp(29px, 2.5vw, 37px);
+  font-size: clamp(29px, 2.4vw, 34px);
   line-height: 1.12;
   letter-spacing: -1.15px;
 }
@@ -22,7 +22,7 @@
 .system-configuration-header p {
   margin: 5px 0 0;
   color: #7182aa;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .system-configuration-tabs {
@@ -60,10 +60,10 @@
 .configuration-group,
 .configuration-history-card {
   padding: 15px 23px 10px;
-  border: 1px solid var(--configuration-border);
-  border-radius: 10px;
+  border: 1px solid var(--surface-border, var(--configuration-border));
+  border-radius: var(--surface-radius, 9px);
   background: rgba(255, 255, 255, .96);
-  box-shadow: 0 5px 18px rgba(52, 79, 122, .04);
+  box-shadow: var(--surface-shadow, 0 5px 18px rgba(52, 79, 122, .04));
 }
 
 .configuration-group header { margin-bottom: 9px; }
@@ -122,10 +122,10 @@
 
 .configuration-value-field input {
   width: 100%;
-  height: 35px;
+  height: var(--control-height, 39px);
   padding: 0 10px;
   border: 1px solid #d6e1ef;
-  border-radius: 7px;
+  border-radius: var(--control-radius, 6px);
   outline: 0;
   background: #fff;
   color: #162354;
@@ -150,7 +150,7 @@
 .configuration-range.is-invalid { color: #d82435; }
 
 .configuration-save-button {
-  height: 36px;
+  height: var(--control-height, 39px);
   border: 1px solid #1a6fe9;
   border-radius: 6px;
   background: linear-gradient(135deg, #2876f5, #145fea);
@@ -373,7 +373,7 @@
 .system-configuration-content button:focus-visible,
 .system-configuration-content input:focus-visible,
 .system-configuration-content textarea:focus-visible {
-  outline: 3px solid rgba(29, 111, 235, .22);
+  outline: var(--focus-ring, 3px solid rgba(29, 111, 235, .22));
   outline-offset: 2px;
 }
 
