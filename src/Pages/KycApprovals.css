@@ -3,7 +3,7 @@
   --kyc-blue: #086bf2;
   --kyc-line: #dce6f2;
   min-height: calc(100dvh - 72px);
-  padding: 16px 18px 34px;
+  padding: 22px 23px 36px;
   background:
     radial-gradient(circle at 94% 3%, rgba(189, 219, 255, .32), transparent 28%),
     linear-gradient(140deg, #f8fbff 0%, #f3f8fe 52%, #fafdff 100%);
@@ -32,13 +32,13 @@
 
 .kyc-breadcrumb strong { color: #071777; }
 
-.kyc-page-header { margin: 0 8px 19px; }
+.kyc-page-header { margin: 0 8px 18px; }
 
 .kyc-page-header h1 {
   margin: 0;
   color: #0b197d;
-  font-size: clamp(29px, 2.4vw, 36px);
-  line-height: 1;
+  font-size: clamp(29px, 2.4vw, 34px);
+  line-height: 1.08;
   letter-spacing: -1.2px;
 }
 
@@ -58,10 +58,10 @@
 .kyc-summary-card,
 .kyc-filters,
 .kyc-table-card {
-  border: 1px solid var(--kyc-line);
-  border-radius: 7px;
+  border: 1px solid var(--surface-border, var(--kyc-line));
+  border-radius: var(--surface-radius, 9px);
   background: rgba(255, 255, 255, .97);
-  box-shadow: 0 5px 20px rgba(55, 83, 132, .045);
+  box-shadow: var(--surface-shadow, 0 5px 18px rgba(55, 83, 132, .045));
 }
 
 .kyc-summary-card {
@@ -136,9 +136,9 @@
 .kyc-filter-field select,
 .kyc-search-control {
   width: 100%;
-  height: 39px;
+  height: var(--control-height, 39px);
   border: 1px solid #cad9ec;
-  border-radius: 5px;
+  border-radius: var(--control-radius, 6px);
   background: #fff;
   color: #0f247b;
   font: inherit;
@@ -224,7 +224,7 @@
   min-width: 990px;
   border-collapse: collapse;
   table-layout: fixed;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .kyc-table th {
@@ -232,7 +232,7 @@
   padding: 6px 8px;
   border-bottom: 1px solid #e0e8f2;
   color: #09196e;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   text-align: left;
   white-space: nowrap;
@@ -247,7 +247,7 @@
 .kyc-table th:nth-child(7) { width: 100px; }
 
 .kyc-table td {
-  height: 54px;
+  height: 58px;
   padding: 5px 8px;
   border-bottom: 1px solid #e0e8f2;
   color: #4663a1;
@@ -296,7 +296,7 @@
   min-height: 29px;
   padding: 5px 10px;
   border-radius: 5px;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1;
   white-space: nowrap;
 }
@@ -309,11 +309,11 @@
   width: 86px;
   height: 33px;
   border: 1px solid #3f8df4;
-  border-radius: 5px;
+  border-radius: var(--control-radius, 6px);
   background: #fff;
   color: #0069ed;
   font: inherit;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
 }
@@ -589,7 +589,7 @@
 .kyc-content select:focus-visible,
 .kyc-content textarea:focus-visible,
 .kyc-search-control:focus-within {
-  outline: 3px solid rgba(14, 109, 238, .22);
+  outline: var(--focus-ring, 3px solid rgba(14, 109, 238, .22));
   outline-offset: 2px;
 }
 
