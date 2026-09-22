@@ -96,7 +96,7 @@ function OtpVerification({ onVerify, onUseDifferentEmail }) {
       return;
     }
 
-    onVerify?.();
+    onVerify?.(digits.join(""));
   };
 
   const handleResend = () => {

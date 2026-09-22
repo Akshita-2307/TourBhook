@@ -562,33 +562,30 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(8px, 1.25vw, 17px);
-  padding: 0 16px;
-  border: 1px solid #d9dee8;
-  border-radius: 5px;
-  background: #ffffff;
-  transition: 0.2s ease;
-}
-
-.otp-inputs:focus-within {
-  border-color: #354bd4;
-  box-shadow: 0 0 0 3px rgba(53, 75, 212, 0.08);
+  gap: clamp(7px, 1vw, 12px);
 }
 
 .otp-digit {
-  width: 24px;
-  height: 38px;
+  width: clamp(40px, 3.2vw, 48px);
+  height: 52px;
   padding: 0;
-  border: 0;
-  outline: 0;
-  background: transparent;
+  border: 1px solid #d9dee8;
+  border-radius: 5px;
+  outline: none;
+  background: #ffffff;
   color: #202b4c;
   font-family: Arial, Helvetica, sans-serif;
   text-align: center;
   font-size: 20px;
   font-weight: 700;
-  line-height: 38px;
+  line-height: 52px;
   caret-color: #354bd4;
+  transition: 0.2s ease;
+}
+
+.otp-digit:focus {
+  border-color: #354bd4;
+  box-shadow: 0 0 0 3px rgba(53, 75, 212, 0.08);
 }
 
 .otp-resend {
