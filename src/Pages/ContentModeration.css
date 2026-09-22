@@ -5,7 +5,7 @@
   max-width: 1500px;
   min-width: 0;
   margin: 0 auto;
-  padding: 14px 16px 30px;
+  padding: 22px 23px 36px;
   color: var(--moderation-navy);
 }
 
@@ -21,21 +21,21 @@
 .moderation-breadcrumb strong { color: #122067; }
 
 .moderation-page-header {
-  margin: 0 6px 16px;
+  margin: 0 6px 18px;
 }
 
 .moderation-page-header h1 {
   margin: 0;
   color: #10195a;
-  font-size: clamp(28px, 2.35vw, 35px);
+  font-size: clamp(29px, 2.4vw, 34px);
   line-height: 1.08;
   letter-spacing: -1.2px;
 }
 
 .moderation-page-header p {
-  margin: 3px 0 0;
+  margin: 5px 0 0;
   color: #6279ad;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .moderation-stats {
@@ -49,10 +49,10 @@
 .moderation-filters,
 .moderation-table-card,
 .report-drawer {
-  border: 1px solid var(--moderation-border);
-  border-radius: 7px;
+  border: 1px solid var(--surface-border, var(--moderation-border));
+  border-radius: var(--surface-radius, 9px);
   background: rgba(255, 255, 255, .97);
-  box-shadow: 0 5px 18px rgba(45, 74, 122, .045);
+  box-shadow: var(--surface-shadow, 0 5px 18px rgba(45, 74, 122, .045));
 }
 
 .moderation-stat {
@@ -131,17 +131,17 @@
   display: grid;
   grid-template-columns: minmax(220px, 1.7fr) repeat(3, minmax(130px, 1fr)) auto;
   align-items: end;
-  gap: 11px;
-  margin-bottom: 13px;
-  padding: 11px 13px;
+  gap: 14px;
+  margin-bottom: 14px;
+  padding: 12px 15px;
 }
 
 .moderation-filter-field {
   min-width: 0;
   display: grid;
-  gap: 4px;
+  gap: 5px;
   color: #14235e;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
 }
 
@@ -149,13 +149,13 @@
 .moderation-filter-control,
 .moderation-search-control {
   width: 100%;
-  height: 34px;
+  height: var(--control-height, 39px);
   border: 1px solid #d6e1ef;
-  border-radius: 5px;
+  border-radius: var(--control-radius, 6px);
   background: #fff;
   color: #19316a;
   font: inherit;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
 }
 
@@ -278,13 +278,13 @@
 
 .clear-filters {
   align-self: center;
-  margin-top: 13px;
+  margin-top: 17px;
   padding: 8px 4px;
   border: 0;
   background: transparent;
   color: #086cf0;
   font: inherit;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   white-space: nowrap;
   cursor: pointer;
@@ -319,19 +319,19 @@
 
 .moderation-table-heading h2 {
   margin: 0;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .moderation-sort {
-  height: 30px;
+  height: 32px;
   display: flex;
   align-items: center;
   gap: 4px;
   padding: 0 4px 0 9px;
   border: 1px solid #d8e3f0;
-  border-radius: 5px;
+  border-radius: var(--control-radius, 6px);
   color: #24366b;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
 }
 
@@ -873,7 +873,7 @@
 .moderation-content select:focus-visible,
 .moderation-search-control:focus-within,
 .moderator-notes textarea:focus-visible {
-  outline: 3px solid rgba(29, 111, 235, .22);
+  outline: var(--focus-ring, 3px solid rgba(29, 111, 235, .22));
   outline-offset: 2px;
 }
 
