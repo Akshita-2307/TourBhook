@@ -2,6 +2,12 @@
   --navy: #101a47;
   --muted: #7183a8;
   --line: #e1e9f3;
+  --surface-border: #dfe7f1;
+  --surface-radius: 9px;
+  --surface-shadow: 0 5px 18px rgba(52, 79, 122, .045);
+  --control-height: 39px;
+  --control-radius: 6px;
+  --focus-ring: 3px solid rgba(29, 111, 235, .22);
   height: 100dvh;
   display: flex;
   overflow: hidden;
@@ -207,7 +213,7 @@
 .plain-button:focus-visible,
 .outlined-control:focus-visible,
 .dashboard-search:focus-within {
-  outline: 3px solid rgba(34, 112, 240, .22);
+  outline: var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -421,10 +427,10 @@
 
 .metric-card,
 .dashboard-panel {
-  border: 1px solid #e0e8f2;
-  border-radius: 9px;
+  border: 1px solid var(--surface-border);
+  border-radius: var(--surface-radius);
   background: rgba(255, 255, 255, .96);
-  box-shadow: 0 5px 18px rgba(70, 98, 139, .04);
+  box-shadow: var(--surface-shadow);
 }
 
 .metric-card {
