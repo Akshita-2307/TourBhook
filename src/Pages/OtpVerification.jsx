@@ -7,7 +7,11 @@ function OtpVerification({ onVerify, onUseDifferentEmail }) {
   const [digits, setDigits] = useState(Array(OTP_LENGTH).fill(""));
   const [error, setError] = useState("");
   const [status, setStatus] = useState("");
+  const [loading, setLoading] = useState(false);
   const inputRefs = useRef([]);
+
+  // Get the email saved during registration or forgot-password state
+  const email = localStorage.getItem("pendingEmail") || "";
 
   const focusDigit = (index) => {
     inputRefs.current[index]?.focus();
@@ -24,11 +28,11 @@ function OtpVerification({ onVerify, onUseDifferentEmail }) {
       const next = [...current];
 
       numericValue
-        .slice(0, OTP_LENGTH - startIndex)
-        .split("")
-        .forEach((digit, offset) => {
-          next[startIndex + offset] = digit;
-        });
+          .slice(0, OTP_LENGTH - startIndex)
+          .split("")
+          .forEach((digit, offset) => {
+            next[startIndex + offset] = digit;
+          });
 
       return next;
     });
@@ -88,7 +92,7 @@ function OtpVerification({ onVerify, onUseDifferentEmail }) {
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (digits.some((digit) => !digit)) {
@@ -96,7 +100,33 @@ function OtpVerification({ onVerify, onUseDifferentEmail }) {
       return;
     }
 
-    onVerify?.(digits.join(""));
+    const otpCode = digits.join("");
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch("http://localhost:5000/api/verify-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, otp: otpCode }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        // Pass verified status up to App.jsx view router
+        onVerify?.(otpCode);
+      } else {
+        setError(data.error || "Invalid or expired verification code.");
+        // Clear digits so user can try re-entering within their active time frame
+        setDigits(Array(OTP_LENGTH).fill(""));
+        focusDigit(0);
+      }
+    } catch (err) {
+      setError("Failed to connect to the backend server.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleResend = () => {
@@ -107,77 +137,77 @@ function OtpVerification({ onVerify, onUseDifferentEmail }) {
   };
 
   return (
-    <div className="login-page">
-      <div className="login-left">
-        <div className="travel-background" />
-        <div className="logos">
-          <img src="/tourbhook.png" alt="TourBhook" />
-        </div>
-      </div>
-      <div className="login-right">
-        <div className="login-card otp-card">
-          <div className="login-header otp-header">
-            <h1>Verify your email</h1>
-            <p>Enter the code sent to you</p>
+      <div className="login-page">
+        <div className="login-left">
+          <div className="travel-background" />
+          <div className="logos">
+            <img src="/tourbhook.png" alt="TourBhook" />
           </div>
-          <form onSubmit={handleSubmit}>
-            <div className="form-group otp-form-group">
-              <label id="verification-code-label">Verification code</label>
-              <div
-                className="otp-inputs"
-                role="group"
-                aria-labelledby="verification-code-label"
-              >
-                {digits.map((digit, index) => (
-                  <input
-                    key={index}
-                    ref={(element) => {
-                      inputRefs.current[index] = element;
-                    }}
-                    className="otp-digit"
-                    type="text"
-                    inputMode="numeric"
-                    autoComplete={index === 0 ? "one-time-code" : "off"}
-                    maxLength={1}
-                    value={digit}
-                    onChange={(event) => handleChange(index, event)}
-                    onKeyDown={(event) => handleKeyDown(index, event)}
-                    onPaste={(event) => handlePaste(index, event)}
-                    aria-label={`Verification code digit ${index + 1}`}
-                  />
-                ))}
-              </div>
+        </div>
+        <div className="login-right">
+          <div className="login-card otp-card">
+            <div className="login-header otp-header">
+              <h1>Verify your email</h1>
+              <p>Enter the code sent to {email ? email : "you"}</p>
             </div>
-            {error && (
-              <p className="form-error otp-message" role="alert">
-                {error}
-              </p>
+            <form onSubmit={handleSubmit}>
+              <div className="form-group otp-form-group">
+                <label id="verification-code-label">Verification code</label>
+                <div
+                    className="otp-inputs"
+                    role="group"
+                    aria-labelledby="verification-code-label"
+                >
+                  {digits.map((digit, index) => (
+                      <input
+                          key={index}
+                          ref={(element) => {
+                            inputRefs.current[index] = element;
+                          }}
+                          className="otp-digit"
+                          type="text"
+                          inputMode="numeric"
+                          autoComplete={index === 0 ? "one-time-code" : "off"}
+                          maxLength={1}
+                          value={digit}
+                          onChange={(event) => handleChange(index, event)}
+                          onKeyDown={(event) => handleKeyDown(index, event)}
+                          onPaste={(event) => handlePaste(index, event)}
+                          aria-label={`Verification code digit ${index + 1}`}
+                      />
+                  ))}
+                </div>
+              </div>
+              {error && (
+                  <p className="form-error otp-message" role="alert">
+                    {error}
+                  </p>
+              )}
+              <button type="submit" className="sign-in-button" disabled={loading}>
+                {loading ? "Verifying..." : "Verify email"}
+              </button>
+            </form>
+            <div className="otp-resend">
+              <span>Didn't receive a code?</span>
+              <button type="button" onClick={handleResend}>
+                Resend code
+              </button>
+            </div>
+            {status && (
+                <p className="otp-status" role="status">
+                  {status}
+                </p>
             )}
-            <button type="submit" className="sign-in-button">
-              Verify email
-            </button>
-          </form>
-          <div className="otp-resend">
-            <span>Didn't receive a code?</span>
-            <button type="button" onClick={handleResend}>
-              Resend code
+            <button
+                type="button"
+                className="bottom bottom-button otp-different-email"
+                onClick={onUseDifferentEmail}
+            >
+              <span>Use a different email</span>
             </button>
           </div>
-          {status && (
-            <p className="otp-status" role="status">
-              {status}
-            </p>
-          )}
-          <button
-            type="button"
-            className="bottom bottom-button otp-different-email"
-            onClick={onUseDifferentEmail}
-          >
-            <span>Use a different email</span>
-          </button>
         </div>
       </div>
-    </div>
   );
 }
 

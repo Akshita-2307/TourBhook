@@ -52,126 +52,126 @@ function SaveConfigurationModal({ change, onCancel, onSave }) {
   if (!change) return null;
 
   return (
-    <div className="configuration-modal-backdrop" role="presentation">
-      <section
-        className="configuration-save-modal"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="save-configuration-title"
-      >
-        <div className="configuration-modal-heading">
-          <span>Configuration change</span>
-          <h2 id="save-configuration-title">Save Configuration</h2>
-        </div>
-        <div className="configuration-change-summary">
-          <strong>{change.setting.label}</strong>
-          <code>{change.setting.id}</code>
-          <div>
+      <div className="configuration-modal-backdrop" role="presentation">
+        <section
+            className="configuration-save-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="save-configuration-title"
+        >
+          <div className="configuration-modal-heading">
+            <span>Configuration change</span>
+            <h2 id="save-configuration-title">Save Configuration</h2>
+          </div>
+          <div className="configuration-change-summary">
+            <strong>{change.setting.label}</strong>
+            <code>{change.setting.id}</code>
+            <div>
             <span className="configuration-old-value">
               {formatValue(
-                change.oldValue,
-                change.setting.type,
-                change.setting.step,
+                  change.oldValue,
+                  change.setting.type,
+                  change.setting.step,
               )}
             </span>
-            <span aria-hidden="true">→</span>
-            <span className="configuration-new-value">
+              <span aria-hidden="true">→</span>
+              <span className="configuration-new-value">
               {formatValue(
-                change.newValue,
-                change.setting.type,
-                change.setting.step,
+                  change.newValue,
+                  change.setting.type,
+                  change.setting.step,
               )}
             </span>
+            </div>
           </div>
-        </div>
-        <label className="configuration-reason">
-          <span>Reason for change <em>(optional)</em></span>
-          <textarea
-            value={reason}
-            onChange={(event) => setReason(event.target.value)}
-            placeholder="Add context for this change..."
-          />
-        </label>
-        <div className="configuration-modal-actions">
-          <button className="configuration-cancel" type="button" onClick={onCancel}>
-            Cancel
-          </button>
-          <button className="configuration-confirm" type="button" onClick={() => onSave(reason)}>
-            Save Change
-          </button>
-        </div>
-      </section>
-    </div>
+          <label className="configuration-reason">
+            <span>Reason for change <em>(optional)</em></span>
+            <textarea
+                value={reason}
+                onChange={(event) => setReason(event.target.value)}
+                placeholder="Add context for this change..."
+            />
+          </label>
+          <div className="configuration-modal-actions">
+            <button className="configuration-cancel" type="button" onClick={onCancel}>
+              Cancel
+            </button>
+            <button className="configuration-confirm" type="button" onClick={() => onSave(reason)}>
+              Save Change
+            </button>
+          </div>
+        </section>
+      </div>
   );
 }
 
 function NumericSetting({ setting, draftValue, onDraftChange, onSave }) {
   const parsedValue = Number(draftValue);
   const isInvalid =
-    !Number.isFinite(parsedValue) ||
-    parsedValue < setting.min ||
-    parsedValue > setting.max;
+      !Number.isFinite(parsedValue) ||
+      parsedValue < setting.min ||
+      parsedValue > setting.max;
   const hasChanged = !isInvalid && parsedValue !== setting.value;
 
   return (
-    <div className="configuration-row">
-      <div className="configuration-row-copy">
-        <strong>{setting.label}</strong>
-        <span>{setting.description}</span>
-      </div>
-      <div className="configuration-value-field">
-        <input
-          type="number"
-          value={draftValue}
-          min={setting.min}
-          max={setting.max}
-          step={setting.step}
-          onChange={(event) => onDraftChange(setting.id, event.target.value)}
-          aria-label={setting.label}
-        />
-        <small>Default: {formatValue(setting.defaultValue, setting.type, setting.step)}</small>
-      </div>
-      <span className={`configuration-range${isInvalid ? " is-invalid" : ""}`}>
+      <div className="configuration-row">
+        <div className="configuration-row-copy">
+          <strong>{setting.label}</strong>
+          <span>{setting.description}</span>
+        </div>
+        <div className="configuration-value-field">
+          <input
+              type="number"
+              value={draftValue}
+              min={setting.min}
+              max={setting.max}
+              step={setting.step}
+              onChange={(event) => onDraftChange(setting.id, event.target.value)}
+              aria-label={setting.label}
+          />
+          <small>Default: {formatValue(setting.defaultValue, setting.type, setting.step)}</small>
+        </div>
+        <span className={`configuration-range${isInvalid ? " is-invalid" : ""}`}>
         {isInvalid
-          ? `Enter a value from ${setting.min} to ${setting.max}`
-          : `Range: ${formatValue(setting.min, setting.type, setting.step)} – ${formatValue(setting.max, setting.type, setting.step)}`}
+            ? `Enter a value from ${setting.min} to ${setting.max}`
+            : `Range: ${formatValue(setting.min, setting.type, setting.step)} – ${formatValue(setting.max, setting.type, setting.step)}`}
       </span>
-      <button
-        className="configuration-save-button"
-        type="button"
-        onClick={() => onSave(setting, parsedValue)}
-        disabled={!hasChanged}
-      >
-        Save
-      </button>
-    </div>
+        <button
+            className="configuration-save-button"
+            type="button"
+            onClick={() => onSave(setting, parsedValue)}
+            disabled={!hasChanged}
+        >
+          Save
+        </button>
+      </div>
   );
 }
 
 function FeatureSetting({ setting, onChange }) {
   return (
-    <div className="configuration-row configuration-feature-row">
-      <div className="configuration-row-copy">
-        <strong>{setting.label}</strong>
-        <span>{setting.description}</span>
-      </div>
-      <button
-        className={`configuration-toggle${setting.value ? " is-enabled" : ""}`}
-        type="button"
-        role="switch"
-        aria-checked={setting.value}
-        aria-label={`Toggle ${setting.label}`}
-        onClick={() => onChange(setting, !setting.value)}
-      >
-        <span />
-      </button>
-      <span className="configuration-feature-state">
+      <div className="configuration-row configuration-feature-row">
+        <div className="configuration-row-copy">
+          <strong>{setting.label}</strong>
+          <span>{setting.description}</span>
+        </div>
+        <button
+            className={`configuration-toggle${setting.value ? " is-enabled" : ""}`}
+            type="button"
+            role="switch"
+            aria-checked={setting.value}
+            aria-label={`Toggle ${setting.label}`}
+            onClick={() => onChange(setting, !setting.value)}
+        >
+          <span />
+        </button>
+        <span className="configuration-feature-state">
         {setting.value ? "Enabled" : "Disabled"}
       </span>
-      <span className="configuration-default-state">
+        <span className="configuration-default-state">
         Default: {String(setting.defaultValue)}
       </span>
-    </div>
+      </div>
   );
 }
 
@@ -179,40 +179,40 @@ function ConfigurationGroup({ group, settings, drafts, onDraftChange, onSave }) 
   const groupSettings = settings.filter((setting) => setting.category === group.id);
 
   return (
-    <section className="configuration-group">
-      <header>
-        <h2>{group.title}</h2>
-        <p>{group.description}</p>
-      </header>
-      <div className="configuration-group-body">
-        {groupSettings.map((setting) =>
-          setting.type === "boolean" ? (
-            <FeatureSetting setting={setting} onChange={onSave} key={setting.id} />
-          ) : (
-            <NumericSetting
-              setting={setting}
-              draftValue={drafts[setting.id]}
-              onDraftChange={onDraftChange}
-              onSave={onSave}
-              key={setting.id}
-            />
-          ),
-        )}
-      </div>
-    </section>
+      <section className="configuration-group">
+        <header>
+          <h2>{group.title}</h2>
+          <p>{group.description}</p>
+        </header>
+        <div className="configuration-group-body">
+          {groupSettings.map((setting) =>
+              setting.type === "boolean" ? (
+                  <FeatureSetting setting={setting} onChange={onSave} key={setting.id} />
+              ) : (
+                  <NumericSetting
+                      setting={setting}
+                      draftValue={drafts[setting.id]}
+                      onDraftChange={onDraftChange}
+                      onSave={onSave}
+                      key={setting.id}
+                  />
+              ),
+          )}
+        </div>
+      </section>
   );
 }
 
 function ChangeHistory({ entries }) {
   return (
-    <section className="configuration-history-card">
-      <div className="configuration-history-heading">
-        <h2>Change History</h2>
-        <p>Recent configuration changes made by administrators.</p>
-      </div>
-      <div className="configuration-history-scroll">
-        <table>
-          <thead>
+      <section className="configuration-history-card">
+        <div className="configuration-history-heading">
+          <h2>Change History</h2>
+          <p>Recent configuration changes made by administrators.</p>
+        </div>
+        <div className="configuration-history-scroll">
+          <table>
+            <thead>
             <tr>
               <th scope="col">Timestamp</th>
               <th scope="col">Parameter Changed</th>
@@ -221,22 +221,22 @@ function ChangeHistory({ entries }) {
               <th scope="col">Admin User</th>
               <th scope="col">Reason</th>
             </tr>
-          </thead>
-          <tbody>
+            </thead>
+            <tbody>
             {entries.map((entry) => (
-              <tr key={entry.id}>
-                <td>{formatTimestamp(entry.timestamp)}</td>
-                <td><code>{entry.parameter}</code></td>
-                <td><span className="configuration-old-value">{String(entry.oldValue)}</span></td>
-                <td><span className="configuration-new-value">{String(entry.newValue)}</span></td>
-                <td>{entry.adminUser}</td>
-                <td>{entry.reason}</td>
-              </tr>
+                <tr key={entry.id}>
+                  <td>{formatTimestamp(entry.timestamp)}</td>
+                  <td><code>{entry.parameter}</code></td>
+                  <td><span className="configuration-old-value">{String(entry.oldValue)}</span></td>
+                  <td><span className="configuration-new-value">{String(entry.newValue)}</span></td>
+                  <td>{entry.adminUser}</td>
+                  <td>{entry.reason}</td>
+                </tr>
             ))}
-          </tbody>
-        </table>
-      </div>
-    </section>
+            </tbody>
+          </table>
+        </div>
+      </section>
   );
 }
 
@@ -244,15 +244,46 @@ function SystemConfiguration() {
   const configuration = useSystemConfiguration();
   const [activeTab, setActiveTab] = useState("settings");
   const [drafts, setDrafts] = useState(() =>
-    Object.fromEntries(
-      configuration.settings
-        .filter((setting) => setting.type !== "boolean")
-        .map((setting) => [
-          setting.id,
-          formatValue(setting.value, setting.type, setting.step),
-        ]),
-    ),
+      Object.fromEntries(
+          configuration.settings
+              .filter((setting) => setting.type !== "boolean")
+              .map((setting) => [
+                setting.id,
+                formatValue(setting.value, setting.type, setting.step),
+              ]),
+      ),
   );
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/system-config")
+        .then((res) => {
+          if (!res.ok) throw new Error("Failed to fetch system configuration");
+          return res.json();
+        })
+        .then((data) => {
+          if (data && typeof data === "object") {
+            // Apply fetched backend settings to configuration hook parameters
+            Object.entries(data).forEach(([key, value]) => {
+              const matchingSetting = configuration.settings.find(s => s.id === key);
+              if (matchingSetting) {
+                matchingSetting.value = value;
+              }
+            });
+
+            setDrafts((current) => ({
+              ...current,
+              ratingThreshold: data.ratingThreshold !== undefined ? String(data.ratingThreshold) : current.ratingThreshold,
+              ratingMultiplier: data.ratingMultiplier !== undefined ? String(data.ratingMultiplier) : current.ratingMultiplier,
+              aiReviewCount: data.aiReviewCount !== undefined ? String(data.aiReviewCount) : current.aiReviewCount,
+              dynamicBreakThreshold: data.dynamicBreakThreshold !== undefined ? String(data.dynamicBreakThreshold) : current.dynamicBreakThreshold,
+              promoRedemptionLimit: data.promoRedemptionLimit !== undefined ? String(data.promoRedemptionLimit) : current.promoRedemptionLimit,
+            }));
+          }
+        })
+        .catch((err) => {
+          console.warn("Backend offline for system configuration, using default local hook:", err);
+        });
+  }, []);
 
   const updateDraft = (settingId, value) => {
     setDrafts((current) => ({ ...current, [settingId]: value }));
@@ -267,87 +298,96 @@ function SystemConfiguration() {
       setDrafts((current) => ({
         ...current,
         [configuration.pendingChange.setting.id]: formatValue(
-          configuration.pendingChange.oldValue,
-          configuration.pendingChange.setting.type,
-          configuration.pendingChange.setting.step,
+            configuration.pendingChange.oldValue,
+            configuration.pendingChange.setting.type,
+            configuration.pendingChange.setting.step,
         ),
       }));
     }
     configuration.cancelChange();
   };
 
-  const saveChange = (reason) => {
+  const saveChange = async (reason) => {
     const change = configuration.pendingChange;
-    configuration.saveChange(reason);
-    if (change?.setting.type !== "boolean") {
-      setDrafts((current) => ({
-        ...current,
-        [change.setting.id]: formatValue(
-          change.newValue,
-          change.setting.type,
-          change.setting.step,
-        ),
-      }));
+    try {
+      await fetch("http://localhost:5000/api/system-config", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ parameter: change?.setting.id, value: change?.newValue, reason }),
+      });
+      configuration.saveChange(reason);
+      if (change?.setting.type !== "boolean") {
+        setDrafts((current) => ({
+          ...current,
+          [change.setting.id]: formatValue(
+              change.newValue,
+              change.setting.type,
+              change.setting.step,
+          ),
+        }));
+      }
+    } catch (err) {
+      alert("Failed to save changes to backend server.");
     }
   };
 
   return (
-    <main className="system-configuration-content">
-      <header className="system-configuration-header">
-        <h1>System Configuration</h1>
-        <p>
-          Manage platform-wide settings and feature behavior. Changes take effect in real time without a redeploy.
-        </p>
-      </header>
+      <main className="system-configuration-content">
+        <header className="system-configuration-header">
+          <h1>System Configuration</h1>
+          <p>
+            Manage platform-wide settings and feature behavior. Changes take effect in real time without a redeploy.
+          </p>
+        </header>
 
-      <div className="system-configuration-tabs" role="tablist" aria-label="System configuration sections">
-        <button
-          className={activeTab === "settings" ? "is-active" : ""}
-          type="button"
-          role="tab"
-          aria-selected={activeTab === "settings"}
-          onClick={() => setActiveTab("settings")}
-        >
-          Configuration Settings
-        </button>
-        <button
-          className={activeTab === "history" ? "is-active" : ""}
-          type="button"
-          role="tab"
-          aria-selected={activeTab === "history"}
-          onClick={() => setActiveTab("history")}
-        >
-          Change History
-        </button>
-      </div>
-
-      {activeTab === "settings" ? (
-        <div className="system-configuration-groups">
-          {configurationGroups.map((group) => (
-            <ConfigurationGroup
-              group={group}
-              settings={configuration.settings}
-              drafts={drafts}
-              onDraftChange={updateDraft}
-              onSave={
-                group.id === "feature"
-                  ? (setting, value) => configuration.requestChange(setting.id, value)
-                  : requestNumericChange
-              }
-              key={group.id}
-            />
-          ))}
+        <div className="system-configuration-tabs" role="tablist" aria-label="System configuration sections">
+          <button
+              className={activeTab === "settings" ? "is-active" : ""}
+              type="button"
+              role="tab"
+              aria-selected={activeTab === "settings"}
+              onClick={() => setActiveTab("settings")}
+          >
+            Configuration Settings
+          </button>
+          <button
+              className={activeTab === "history" ? "is-active" : ""}
+              type="button"
+              role="tab"
+              aria-selected={activeTab === "history"}
+              onClick={() => setActiveTab("history")}
+          >
+            Change History
+          </button>
         </div>
-      ) : (
-        <ChangeHistory entries={configuration.auditHistory} />
-      )}
 
-      <SaveConfigurationModal
-        change={configuration.pendingChange}
-        onCancel={cancelChange}
-        onSave={saveChange}
-      />
-    </main>
+        {activeTab === "settings" ? (
+            <div className="system-configuration-groups">
+              {configurationGroups.map((group) => (
+                  <ConfigurationGroup
+                      group={group}
+                      settings={configuration.settings}
+                      drafts={drafts}
+                      onDraftChange={updateDraft}
+                      onSave={
+                        group.id === "feature"
+                            ? (setting, value) => configuration.requestChange(setting.id, value)
+                            : requestNumericChange
+                      }
+                      key={group.id}
+                  />
+              ))}
+            </div>
+        ) : (
+            <ChangeHistory entries={configuration.auditHistory} />
+        )}
+
+        <SaveConfigurationModal
+            change={configuration.pendingChange}
+            onCancel={cancelChange}
+            onSave={saveChange}
+        />
+      </main>
   );
 }
 
