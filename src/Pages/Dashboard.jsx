@@ -589,7 +589,6 @@ function Dashboard({ data: initialMockData, onLogout }) {
             });
     };
 
-    // Fetch live backend users from Spring Boot MySQL database on load
     useEffect(() => {
         fetchUsers();
     }, []);
