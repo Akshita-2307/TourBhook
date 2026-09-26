@@ -34,3 +34,8 @@ build/
 
 .env
 .idea/
+
+
+# Ignore configuration properties with sensitive credentials
+src/main/resources/application.properties
+src/main/resources/application.yml
