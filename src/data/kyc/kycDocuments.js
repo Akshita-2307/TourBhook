@@ -17,24 +17,6 @@ export const kycDocumentDefinitions = [
     documentNumber: "XXXX XXXX 1234",
     issuedBy: "Government of India",
   },
-  {
-    key: "bankingDetails",
-    label: "Banking Details",
-    fileName: "Cancelled_Cheque.pdf",
-    fileUrl: "/mock-documents/banking-details.pdf",
-    previewUrl: "/mock-documents/banking-details-preview.png",
-    documentNumber: "•••• 6712",
-    issuedBy: "Verified bank account",
-  },
-  {
-    key: "license",
-    label: "License",
-    fileName: "Tour_Operator_License.pdf",
-    fileUrl: "/mock-documents/license.pdf",
-    previewUrl: "/mock-documents/license-preview.png",
-    documentNumber: "UK-TO-2026-0148",
-    issuedBy: "Department of Tourism",
-  },
 ];
 
 export const createDocumentSet = (submittedKeys) =>

@@ -1,6 +1,6 @@
 import { createDocumentSet } from "./kycDocuments";
 
-const allDocuments = ["panCard", "aadhaarCard", "bankingDetails", "license"];
+const allDocuments = ["panCard", "aadhaarCard"];
 
 export const kycSummaryCards = [
   {
@@ -57,7 +57,7 @@ export const initialKycSubmissions = [
     status: "Submitted",
     color: "#465972",
     initials: "MT",
-    documents: createDocumentSet(["panCard", "aadhaarCard", "license"]),
+    documents: createDocumentSet(allDocuments),
   },
   {
     id: "KYC-2006",
@@ -122,7 +122,7 @@ export const initialKycSubmissions = [
     status: "Pending",
     color: "#d47924",
     initials: "RC",
-    documents: createDocumentSet(["panCard", "bankingDetails", "license"]),
+    documents: createDocumentSet(["panCard"]),
   },
   {
     id: "KYC-2001",
@@ -168,9 +168,8 @@ export const initialKycSubmissions = [
 
 export const statusOptions = ["Submitted", "Pending", "Rejected"];
 
-export const documentCompletionOptions = [
-  { value: "all", label: "All", count: null },
-  { value: "half", label: "Half", count: 2 },
-  { value: "one", label: "Only One", count: 1 },
-  { value: "three", label: "Three", count: 3 },
+export const documentTypeOptions = [
+  { value: "all", label: "All Documents" },
+  { value: "panCard", label: "PAN Card" },
+  { value: "aadhaarCard", label: "Aadhaar Card" },
 ];
