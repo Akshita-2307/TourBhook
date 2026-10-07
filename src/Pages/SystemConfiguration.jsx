@@ -280,8 +280,8 @@ function SystemConfiguration() {
             }));
           }
         })
-        .catch((err) => {
-          console.warn("Backend offline for system configuration, using default local hook:", err);
+        .catch(() => {
+          console.warn("Backend offline for system configuration, using default local hook:");
         });
   }, []);
 
@@ -326,7 +326,7 @@ function SystemConfiguration() {
           ),
         }));
       }
-    } catch (err) {
+    } catch {
       alert("Failed to save changes to backend server.");
     }
   };
