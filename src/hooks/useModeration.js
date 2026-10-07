@@ -36,6 +36,7 @@ export function useModeration() {
     moderationBlockedUsers.map((user) => ({ ...user })),
   );
   const [filters, setFilters] = useState({ ...defaultModerationFilters });
+  const [summaryFilter, setSummaryFilter] = useState(null);
   const [sortOrder, setSortOrder] = useState("newest");
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -60,11 +61,23 @@ export function useModeration() {
 
   const updateFilters = (changes) => {
     setFilters((current) => ({ ...current, ...changes }));
+    setSummaryFilter(null);
     setCurrentPage(1);
   };
 
   const clearFilters = () => {
     setFilters({ ...defaultModerationFilters });
+    setSummaryFilter(null);
+    setCurrentPage(1);
+  };
+
+  const applySummaryFilter = (filter) => {
+    setSummaryFilter(filter);
+    setFilters({
+      ...defaultModerationFilters,
+      severity: filter === "critical" ? "Severe" : "All",
+      status: filter === "resolved" ? "Resolved" : "All",
+    });
     setCurrentPage(1);
   };
 
@@ -89,6 +102,9 @@ export function useModeration() {
           (!query || searchable.includes(query)) &&
           (filters.status === "All" || report.status === filters.status) &&
           (filters.severity === "All" || report.severity === filters.severity) &&
+          (summaryFilter !== "open" ||
+            report.status === "Pending" ||
+            report.status === "Review") &&
           (!start || submitted >= start) &&
           (!end || submitted <= end)
         );
@@ -100,7 +116,7 @@ export function useModeration() {
           ? secondDate - firstDate
           : firstDate - secondDate;
       });
-  }, [filters, reports, sortOrder]);
+  }, [filters, reports, sortOrder, summaryFilter]);
 
   const pageCount = Math.max(1, Math.ceil(filteredReports.length / rowsPerPage));
   const safePage = Math.min(currentPage, pageCount);
@@ -178,10 +194,15 @@ export function useModeration() {
     notify("Reported content removed.");
   };
 
-  const permanentlyBlockUser = (reportId) => {
+  const permanentlyBlockUser = (reportId, reason) => {
     const report = reports.find((item) => item.id === reportId);
-    if (!report || report.reportedUser.accountStatus === "Permanently Blocked") {
-      return;
+    const blockReason = reason?.trim();
+    if (
+      !report ||
+      !blockReason ||
+      report.reportedUser.accountStatus === "Permanently Blocked"
+    ) {
+      return false;
     }
     const blockedAt = new Date().toISOString();
 
@@ -200,7 +221,7 @@ export function useModeration() {
                   ? [
                       ...item.moderationHistory,
                       {
-                        action: "User permanently blocked",
+                        action: `User permanently blocked: ${blockReason}`,
                         createdAt: blockedAt,
                         moderator: "Akshita Sharma",
                       },
@@ -217,7 +238,7 @@ export function useModeration() {
             {
               ...report.reportedUser,
               accountStatus: "Permanently Blocked",
-              reason: `Severe violation reported in ${report.id}`,
+              reason: blockReason,
               blockedAt,
               blockedBy: "Akshita Sharma",
               status: "Permanently Blocked",
@@ -226,6 +247,7 @@ export function useModeration() {
           ],
     );
     notify("User permanently blocked. Access revoked immediately.");
+    return true;
   };
 
   const unblockUser = (userId) => {
@@ -253,6 +275,7 @@ export function useModeration() {
     filters,
     updateFilters,
     clearFilters,
+    applySummaryFilter,
     sortOrder,
     changeSortOrder,
     currentPage: safePage,
