@@ -42,6 +42,7 @@ public class KycController {
 
             return ResponseEntity.ok(Map.of("success", true, "message", "KYC submitted successfully and pending review."));
         } catch (Exception e) {
+            System.err.println("KYC Submit Error: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("success", false, "error", e.getMessage()));
         }
     }
@@ -71,28 +72,11 @@ public class KycController {
 
             List<Map<String, Object>> queue = jdbcTemplate.queryForList(sql);
 
-            // If table is empty, return a structured fallback sample for immediate UI rendering
-            if (queue.isEmpty()) {
-                queue = List.of(
-                        Map.of(
-                                "id", 1,
-                                "userId", 101,
-                                "email", "rahul.verma@example.com",
-                                "partnerName", "Rahul Verma",
-                                "documentType", "Passport",
-                                "documentReference", "Z9876543",
-                                "status", "PENDING",
-                                "submittedDate", "2026-06-05"
-                        )
-                );
-            }
-
             return ResponseEntity.ok(Map.of("success", true, "submissions", queue));
 
         } catch (Exception e) {
             System.err.println("KYC Queue Fetch Error: " + e.getMessage());
-            // Fallback response for development alignment
-            return ResponseEntity.ok(Map.of("success", true, "submissions", List.of()));
+            return ResponseEntity.status(500).body(Map.of("success", false, "error", e.getMessage()));
         }
     }
 
@@ -115,6 +99,7 @@ public class KycController {
 
             return ResponseEntity.ok(Map.of("success", true, "message", "KYC status updated to " + status));
         } catch (Exception e) {
+            System.err.println("KYC Review Error: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("success", false, "error", e.getMessage()));
         }
     }

@@ -57,6 +57,7 @@ public class ModerationController {
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {
+            System.err.println("Moderation Reports Fetch Error: " + e.getMessage());
             response.put("success", false);
             response.put("error", e.getMessage());
             return ResponseEntity.status(500).body(response);
@@ -70,6 +71,7 @@ public class ModerationController {
             jdbcTemplate.update("UPDATE content_reports SET status = ? WHERE report_id = ?", newStatus, reportId);
             return ResponseEntity.ok(Map.of("success", true));
         } catch (Exception e) {
+            System.err.println("Moderation Status Update Error: " + e.getMessage());
             return ResponseEntity.status(400).body(Map.of("success", false, "error", e.getMessage()));
         }
     }

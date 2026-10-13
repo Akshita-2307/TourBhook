@@ -1,4 +1,4 @@
-import { createDocumentSet } from "./kycDocuments";
+import { createDocumentSet } from "./kycDocuments.js";
 
 const allDocuments = ["panCard", "aadhaarCard"];
 

@@ -99,11 +99,11 @@ npm run preview
 src/
 ├── data/
 │   ├── dashboardMockData.js                 # Dashboard presentation data
-│   ├── dashboardMockData.d.ts               # Dashboard data contract reference
+│   ├── dashboardMockData.ts               # Dashboard data contract reference
 │   ├── moderationMockData.js                # Moderation reports, filters, and KPIs
-│   ├── moderationMockData.d.ts              # Moderation data contract reference
+│   ├── moderationMockData.ts              # Moderation data contract reference
 │   ├── systemConfigurationMockData.js       # Configuration settings and audit records
-│   ├── systemConfigurationMockData.d.ts     # Configuration data contract reference
+│   ├── systemConfigurationMockData.ts     # Configuration data contract reference
 │   └── kyc/
 │       ├── kycData.js                       # KYC submissions and filter data
 │       └── kycDocuments.js                  # KYC document definitions
@@ -130,9 +130,9 @@ public/
 The portal intentionally has no API calls, database, browser storage, or real authentication. It is designed so a backend team can replace mock data without rebuilding the UI.
 
 - Dashboard display data is in `src/data/dashboardMockData.js`.
-- Moderation data and its shape reference are in `src/data/moderationMockData.js` and `src/data/moderationMockData.d.ts`.
+- Moderation data and its shape reference are in `src/data/moderationMockData.js` and `src/data/moderationMockData.ts`.
 - KYC data and document definitions are in `src/data/kyc/`.
-- System Configuration data and its shape reference are in `src/data/systemConfigurationMockData.js` and `src/data/systemConfigurationMockData.d.ts`.
+- System Configuration data and its shape reference are in `src/data/systemConfigurationMockData.js` and `src/data/systemConfigurationMockData.ts`.
 - Local state transitions are kept in `src/hooks/`, leaving page components focused on rendering and interaction.
 
 For an API integration, replace each mock-data source and the corresponding local state actions with service calls while retaining the existing page-level data contracts.

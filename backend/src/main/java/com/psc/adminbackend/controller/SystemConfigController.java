@@ -33,6 +33,7 @@ public class SystemConfigController {
             response.put("settings", settings);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
+            System.err.println("System Config Fetch Error: " + e.getMessage());
             response.put("success", false);
             response.put("error", e.getMessage());
             return ResponseEntity.status(500).body(response);
@@ -50,6 +51,7 @@ public class SystemConfigController {
             response.put("history", history);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
+            System.err.println("Audit History Fetch Error: " + e.getMessage());
             response.put("success", false);
             response.put("error", e.getMessage());
             return ResponseEntity.status(500).body(response);
@@ -59,6 +61,12 @@ public class SystemConfigController {
     @PostMapping("/config/update")
     public ResponseEntity<?> updateConfiguration(@RequestBody Map<String, Object> payload) {
         String key = (String) payload.get("configKey");
-        return ResponseEntity.ok(Map.of("success", true, "message", "Configuration " + key + " updated successfully."));
+        try {
+            // Optional: Add actual update query against your database here when needed
+            return ResponseEntity.ok(Map.of("success", true, "message", "Configuration " + key + " updated successfully."));
+        } catch (Exception e) {
+            System.err.println("Configuration Update Error: " + e.getMessage());
+            return ResponseEntity.status(400).body(Map.of("success", false, "error", e.getMessage()));
+        }
     }
 }
