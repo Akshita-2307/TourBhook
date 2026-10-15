@@ -1,144 +1,128 @@
-# TourBhook Admin Portal
+# 🌍 TourBhook Admin Portal & Ecosystem
 
-A responsive, frontend-only admin portal for TourBhook. The project provides a local login experience and interactive admin workflows for user activity, content moderation, KYC approvals, and system configuration. All operational data is isolated as realistic mock data so it can be replaced by a backend service later.
+A fully integrated, production-ready, full-stack travel booking admin portal and mobile client ecosystem for **TourBhook**. The system bridges a responsive React web admin portal and a React Native mobile application with a centralized **Spring Boot REST API** backed by **Google Cloud SQL (MySQL)**. It delivers secure authentication, role-based access control (RBAC), live user activity tracking, content moderation, partner KYC verification queues, and system configuration management.
 
-## Highlights
+---
 
-- Accessible local login and logout flow
-- Responsive dashboard with KPI cards, date-range selection, period selection, and an interactive new-user chart
-- Content Moderation workspace with filters, report review, local moderation actions, and pagination
-- KYC Approvals workspace with searchable submissions, document previews, status management, and local review actions
-- System Configuration workspace with validated numeric settings, feature flags, confirmation modal, and local audit history
-- Fixed desktop sidebar and responsive mobile layout
+## ✨ Highlights
 
-## Tech Stack
+- **🔒 Secure Full-Stack Authentication:** Token-based JWT authentication featuring automatic 10-minute session inactivity tracking and secure password hashing using Spring Security and BCrypt.
+- **👑 Isolated Super Admin Controls:** Dedicated `admins` table separating the super admin (`digitech.pramahar@gmail.com`) from regular application users, with dedicated account control panels for updating mobile numbers and secure password hashes.
+- **🛡️ Role-Based Access Control (RBAC):** Live management of regular application user accounts with assignable roles (`SUPER_ADMIN`, `OPERATIONS`, `FINANCE_OPS`, `SUPPORT_TEAM`, `CONTENT_MODERATION`, `USER`).
+- **📊 Live User Activity Dashboard:** Real-time metrics, dynamic reporting periods, and SVG activity charts driven by actual database account registrations.
+- **🛡️ Content Moderation Workspace:** Live parameterized search, status/severity filters, report review drawers, persistent moderator notes, content removal flags, and user blocking linked directly to Cloud SQL tables.
+- **📑 KYC Approvals Workspace:** Partner document verification queue, multi-status workflows, and real-time review states fully synchronized with the database.
+- **📱 Mobile App Synchronization:** Cross-platform React Native mobile client completely wired to register and authenticate users directly through the Spring Boot backend.
 
-- React 19
-- Vite 8
-- React Day Picker 10
-- Plain CSS
-- ESLint
+---
 
-## Getting Started
+## 🛠️ Tech Stack
+
+### 🚀 Backend
+- **Java 17 / Spring Boot 3.2**
+- **Spring Security & BCrypt** Password Hashing
+- **Spring Data JPA & JDBC Template**
+- **Google Cloud SQL (MySQL)** Connector
+- **JJWT** (JSON Web Token) Security
+
+### 💻 Frontend (Admin Portal)
+- **React 19 / Vite 8**
+- **React Day Picker 10**
+- Plain CSS & Responsive Flex/Grid Layouts
+
+### 📱 Mobile App
+- **React Native / TypeScript**
+- Axios API Client with Token Interceptors
+
+---
+
+## 🚀 Getting Started
 
 ### Prerequisites
 
+- Java Development Kit (JDK) 17 or later
 - Node.js 18 or later
-- npm
+- Maven
+- Configured Google Cloud SQL instance
 
-### Install dependencies
+---
 
-```bash
+### 1️⃣ Backend Setup & Run
+
+1. Configure your database and environment properties in `src/main/resources/application.properties` and your root `.env` file:
+   ```env
+   DB_USER=
+   DB_PASSWORD=YourPassword
+   INSTANCE_CONNECTION_NAME=
+   SUPER_ADMIN_EMAIL=
+   SUPER_ADMIN_PASSWORD=
+
+Build and run the Spring Boot application using Maven or directly from IntelliJ IDEA (runs on port 8080).
+
+2️⃣ Frontend Admin Portal Setup
+Navigate to the frontend directory, install dependencies, and start the development server:
+
+Bash
+cd frontend
 npm install
-```
-
-### Start the development server
-
-```bash
 npm run dev
-```
+Open the local URL printed by Vite (http://localhost:5173) to access the secure login portal.
 
-Open the local URL printed by Vite.
+3️⃣ Mobile App Setup
+Navigate to your mobile project directory, install dependencies, and launch:
 
-### Build for production
+Bash
+cd 
+npm install
+npx react-native run-android
 
-```bash
-npm run build
-```
 
-### Run linting
+🌟 Portal Areas & Live Architecture
 
-```bash
-npm run lint
-```
+📈 User Activity & RBAC
+Live Metrics & Charts: Real-time database counts for active users, total users, and dynamic registration curves over custom date filters.
 
-### Preview the production build
+User Accounts Modal: Fetches all registered application users (excluding the super admin) live from the backend and allows dynamic role assignment.
 
-```bash
-npm run preview
-```
+Most Preferred Cities: Automatically aggregates live user account distributions.
 
-## Portal Areas
+🔍 Content Moderation
+Live Database Search: Real-time parameterized queries filtering by report ID, content snippet, or user email.
 
-### User Activity
+Interactive Review Drawer: Persistent storage for moderator notes, content approval, content removal flags, and permanent user blocks stored in Cloud SQL tables (content_reports and blocked_users).
 
-- User and trip KPI cards with trend indicators
-- Date-range picker with Apply and Cancel actions
-- Reporting-period selector for weekly, 30-day, and 90-day chart data
-- Responsive SVG chart with nearest-point hover tooltip
-- Most Preferred Cities table
+✅ KYC Approvals
+Partner Verification Queue: Fetches partner document submissions directly from kyc_submissions.
 
-### Content Moderation
+Review Workflows: Approving, rejecting, or marking applications pending updates both the queue and the user's overall verification status instantly.
 
-- Search by report ID, reported user, username, or reported content
-- Status, severity, and date filters, including a custom date range
-- Newest/oldest sorting and pagination
-- Report detail drawer with reported content, user context, history, and moderator notes
-- Local actions to dismiss reports, remove content, block users, and unblock users
-- Blocked-user summary and transient feedback states
+⚙️ Super Admin Security Settings
+Accessible via the bottom-left profile menu. Allows the administrator to update their contact number and securely update their password hash in the admins table.
 
-### KYC Approvals
+📁 Project Structure
+Plaintext
 
-- Searchable KYC submissions and status filtering
-- Summary cards for review states
-- Document-completeness filtering
-- Submission details with local document preview assets
-- Local approval, rejection, and review-status actions
+TourBhook/
+├── backend/                  # Spring Boot REST API & Cloud SQL Integration
+│   └── src/main/java/com/psc/adminbackend/
+│       ├── controller/       # AuthController, AdminController, DashboardController,
+│       │                     # UserController, KycController, ModerationController
+│       ├── service/          # AuditService, LocalizationService
+│       └── security/         # SecurityConfig
+├── frontend/                 # React Web Admin Portal
+│   ├── src/
+│   │   ├── Pages/            # Login, Dashboard, ContentModeration, KycApprovals, SystemConfiguration
+│   │   ├── hooks/            # useModeration, useSystemConfiguration
+│   │   ├── App.jsx           # Protected route routing & 10-minute session timeout
+│   │   └── main.jsx
+│   └── public/               # Brand assets & mock document previews
+└── tourbhook-mobile/         # React Native Mobile Client Application
+└── src/
+└── api/              # Axios API client configured for backend synchronization
 
-### System Configuration
 
-- Grouped Algorithm & Weights, AI Thresholds, and Feature Flags settings
-- Range validation for numeric configuration values
-- Save Change confirmation with an optional change reason
-- Local feature-flag toggles
-- Change History tab showing old and new values, administrator, timestamp, and reason
+🛡️ Security & Session Management
 
-## Project Structure
+Session Timeout: The admin portal enforces a strict 10-minute session inactivity timer. After 10 minutes of inactivity, the session is automatically cleared, returning the user safely to the login screen.
 
-```text
-src/
-├── data/
-│   ├── dashboardMockData.js                 # Dashboard presentation data
-│   ├── dashboardMockData.ts               # Dashboard data contract reference
-│   ├── moderationMockData.js                # Moderation reports, filters, and KPIs
-│   ├── moderationMockData.ts              # Moderation data contract reference
-│   ├── systemConfigurationMockData.js       # Configuration settings and audit records
-│   ├── systemConfigurationMockData.ts     # Configuration data contract reference
-│   └── kyc/
-│       ├── kycData.js                       # KYC submissions and filter data
-│       └── kycDocuments.js                  # KYC document definitions
-├── hooks/
-│   ├── useModeration.js                     # Local moderation state transitions
-│   └── useSystemConfiguration.js            # Local configuration state and audit history
-├── Pages/
-│   ├── Login.jsx / Login.css
-│   ├── Dashboard.jsx / Dashboard.css
-│   ├── ContentModeration.jsx / ContentModeration.css
-│   ├── KycApprovals.jsx / KycApprovals.css
-│   └── SystemConfiguration.jsx / SystemConfiguration.css
-├── App.jsx                                  # Local view transition and portal entry point
-└── main.jsx
-
-public/
-├── bg.png                                   # Sidebar illustration
-├── tourbhook.png                            # Brand asset
-└── mock-documents/                          # Local KYC preview and PDF assets
-```
-
-## Mock Data and Backend Handoff
-
-The portal intentionally has no API calls, database, browser storage, or real authentication. It is designed so a backend team can replace mock data without rebuilding the UI.
-
-- Dashboard display data is in `src/data/dashboardMockData.js`.
-- Moderation data and its shape reference are in `src/data/moderationMockData.js` and `src/data/moderationMockData.ts`.
-- KYC data and document definitions are in `src/data/kyc/`.
-- System Configuration data and its shape reference are in `src/data/systemConfigurationMockData.js` and `src/data/systemConfigurationMockData.ts`.
-- Local state transitions are kept in `src/hooks/`, leaving page components focused on rendering and interaction.
-
-For an API integration, replace each mock-data source and the corresponding local state actions with service calls while retaining the existing page-level data contracts.
-
-## Notes
-
-- Login, moderation, KYC, and configuration changes are local-only and reset when the page reloads.
-- The dashboard’s date range and reporting period are frontend controls. They are ready to provide request values to a future analytics service.
-- No credentials, user changes, moderation decisions, or settings changes are persisted.
+Credential Hashing: Super admin passwords are secured using enterprise-grade BCrypt hashing and managed via isolated database tables separate from regular application end-users.
