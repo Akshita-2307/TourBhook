@@ -18,7 +18,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class UserController {
 
     @Autowired
@@ -36,9 +36,13 @@ public class UserController {
     private final String SECRET = "MySuperSecretKeyThatIsAtLeast32BytesLongForSecurity!";
     private final SecretKey key = Keys.hmacShaKeyFor(SECRET.getBytes());
 
+    // Exclude Super Admin from regular app users list
     @GetMapping("/users")
     public List<Map<String, Object>> getUsers() {
-        return jdbcTemplate.queryForList("SELECT id, email, role, kyc_status, language_preference FROM users");
+        return jdbcTemplate.queryForList(
+                "SELECT id, email, role, kyc_status, language_preference FROM users WHERE LOWER(email) != LOWER(?)",
+                "digitech.pramahar@gmail.com"
+        );
     }
 
     @PutMapping("/users/{userId}/role")
@@ -65,7 +69,6 @@ public class UserController {
         String email = payload.get("email");
         String rawPassword = payload.get("password");
 
-        // Strictly enforce single Super Admin ID
         if (!"digitech.pramahar@gmail.com".equalsIgnoreCase(email)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("success", false, "error", "Access restricted to authorized administrator."));
@@ -140,7 +143,7 @@ public class UserController {
     @GetMapping("/moderation-reports")
     public ResponseEntity<?> getModerationReports() {
         try {
-            List<Map<String, Object>> dbUsers = jdbcTemplate.queryForList("SELECT id, email FROM users");
+            List<Map<String, Object>> dbUsers = jdbcTemplate.queryForList("SELECT id, email FROM users WHERE LOWER(email) != LOWER('digitech.pramahar@gmail.com')");
             List<Map<String, Object>> formattedReports = new ArrayList<>();
 
             int index = 10480;
@@ -179,7 +182,7 @@ public class UserController {
 
     @GetMapping("/kyc-requests")
     public ResponseEntity<?> getKycRequests() {
-        List<Map<String, Object>> users = jdbcTemplate.queryForList("SELECT id, email, kyc_status FROM users");
+        List<Map<String, Object>> users = jdbcTemplate.queryForList("SELECT id, email, kyc_status FROM users WHERE LOWER(email) != LOWER('digitech.pramahar@gmail.com')");
         return ResponseEntity.ok(users);
     }
 
